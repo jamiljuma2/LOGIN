@@ -1,3 +1,4 @@
+import Footer from '../components/Footer'
 
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
@@ -35,6 +36,7 @@ export default function AdminLayout() {
           <main className="flex-1 py-4 md:py-8">
             <Outlet />
           </main>
+          <Footer />
         </div>
       </div>
     </div>

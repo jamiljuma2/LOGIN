@@ -3,6 +3,7 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import { useToast } from '../components/ToastProvider'
+import Footer from '../components/Footer'
 import { useState } from 'react'
 
 export default function StudentLayout() {
@@ -48,6 +49,7 @@ export default function StudentLayout() {
           <main className="flex-1 py-4 md:py-8">
             <Outlet />
           </main>
+          <Footer />
         </div>
       </div>
     </div>
