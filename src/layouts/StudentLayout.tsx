@@ -31,22 +31,24 @@ export default function StudentLayout() {
     <div className="flex min-h-screen bg-background">
       <Sidebar title="Student" items={items} mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex-1 flex flex-col min-h-screen">
-        <header className="h-16 flex items-center justify-between px-6 border-b bg-white/80 backdrop-blur sticky top-0 z-10">
-          <div className="flex items-center gap-2">
-            {/* Mobile sidebar toggle button */}
-            <button className="md:hidden mr-2 text-2xl" onClick={() => setSidebarOpen(true)} aria-label="Open sidebar">☰</button>
-            <img src="/edulink-logo.svg" alt="EduLink Writers Logo" className="w-8 h-8" />
-            <span className="font-bold text-brand-500 font-serif text-lg">EduLink Writers</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-muted text-sm">Student</span>
-            <button className="btn btn-outline rounded-full px-3 py-1" onClick={handleNotifications}>Notifications</button>
-            <button className="btn btn-accent rounded-full px-3 py-1" onClick={handleLogout}>Logout</button>
-          </div>
-        </header>
-        <main className="flex-1 p-4 md:p-8">
-          <Outlet />
-        </main>
+        <div className="mx-auto w-full max-w-screen-xl flex flex-col min-h-screen px-2 sm:px-4 md:px-8">
+          <header className="h-16 flex items-center justify-between border-b bg-white/80 backdrop-blur sticky top-0 z-10 px-2 sm:px-6">
+            <div className="flex items-center gap-2">
+              {/* Mobile sidebar toggle button */}
+              <button className="md:hidden mr-2 text-2xl min-h-[44px]" onClick={() => setSidebarOpen(true)} aria-label="Open main navigation sidebar" tabIndex={0}>☰</button>
+              <img src="/edulink-logo.svg" alt="EduLink Writers Logo" className="w-8 h-8" />
+              <span className="font-bold text-brand-500 font-serif text-lg">EduLink Writers</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-muted text-sm">Student</span>
+              <button className="btn btn-outline rounded-full px-3 py-1 min-h-[44px]" onClick={handleNotifications}>Notifications</button>
+              <button className="btn btn-accent rounded-full px-3 py-1 min-h-[44px]" onClick={handleLogout}>Logout</button>
+            </div>
+          </header>
+          <main className="flex-1 py-4 md:py-8">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   )
