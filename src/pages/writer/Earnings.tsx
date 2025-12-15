@@ -14,6 +14,13 @@ export default function Earnings() {
   const [method, setMethod] = useState('mpesa');
   const [details, setDetails] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Helper to get currency symbol
+  function getCurrencySymbol(method: string) {
+    if (method === 'mpesa') return 'Ksh';
+    if (method === 'paypal') return '$';
+    return '$';
+  }
   const { showToast } = useToast();
 
   async function handleWithdraw(e: React.FormEvent) {
@@ -57,7 +64,9 @@ export default function Earnings() {
       <div className="card p-4">
         <div className="flex items-center justify-between">
           <span className="text-sm text-gray-600">Wallet Balance</span>
-          <span className="text-2xl font-semibold">${balance}</span>
+          <span className="text-2xl font-semibold">
+            {method === 'mpesa' ? 'Ksh' : method === 'paypal' ? '$' : '$'}{balance}
+          </span>
         </div>
         <button
           className="mt-4 btn btn-primary w-full"
@@ -79,7 +88,10 @@ export default function Earnings() {
           {payments.map(p => (
             <div key={p.id} className="flex items-center justify-between">
               <span>{p.title}</span>
-              <span className="font-medium">${p.amount}</span>
+              <span className="font-medium">
+                {/* Example: if payment method is known, use symbol; fallback to $ */}
+                {method === 'mpesa' ? 'Ksh' : method === 'paypal' ? '$' : '$'}{p.amount}
+              </span>
               <span className="text-gray-600">{p.date}</span>
             </div>
           ))}
@@ -92,16 +104,19 @@ export default function Earnings() {
           </div>
           <div>
             <label className="block text-sm mb-1">Amount</label>
-            <input
-              type="number"
-              className="input w-full"
-              min="1"
-              max={balance}
-              value={amount}
-              onChange={e => setAmount(e.target.value)}
-              placeholder="Enter amount to withdraw"
-              required
-            />
+            <div className="flex items-center">
+              <span className="mr-2 text-gray-600">{getCurrencySymbol(method)}</span>
+              <input
+                type="number"
+                className="input w-full"
+                min="1"
+                max={balance}
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+                placeholder={`Enter amount to withdraw`}
+                required
+              />
+            </div>
           </div>
           <div>
             <label className="block text-sm mb-1">Payment Method</label>
