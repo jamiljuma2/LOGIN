@@ -20,7 +20,16 @@ export default function Landing() {
           <h1 className="text-3xl md:text-4xl font-bold text-brand-700 font-serif leading-tight">Academic Excellence. Trusted Connections.</h1>
           <p className="text-lg text-muted max-w-xl">A secure, professional platform connecting students with verified academic writers. Built for trust, privacy, and results—where every assignment matters.</p>
           <div className="flex gap-4 mt-2">
-            <Link to="/auth/register" className="btn btn-primary text-base px-6 py-2 rounded-full shadow">Get Started</Link>
+            <Link
+              to="/auth/register"
+              className="text-base px-6 py-2 rounded-full shadow font-semibold text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
+              style={{
+                background: 'linear-gradient(90deg, #28A745 0%, #32CD32 100%)',
+                border: 'none',
+              }}
+            >
+              Get Started
+            </Link>
             <Link to="/auth/login" className="btn btn-outline text-base px-6 py-2 rounded-full">Login</Link>
           </div>
         </div>
