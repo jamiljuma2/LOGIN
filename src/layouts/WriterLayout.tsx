@@ -1,5 +1,7 @@
-import { Outlet } from 'react-router-dom'
+
+import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import { useToast } from '../components/ToastProvider'
 
 export default function WriterLayout() {
   const items = [
@@ -11,6 +13,13 @@ export default function WriterLayout() {
     { to: '/writer/rating-badge', label: 'Ratings & Badge' },
     { to: '/writer/settings', label: 'Settings' },
   ]
+  const nav = useNavigate();
+  const { showToast } = useToast();
+
+  function handleLogout() {
+    showToast({ type: 'success', message: 'Logged out' });
+    nav('/auth/login');
+  }
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar title="Writer" items={items} />
@@ -23,7 +32,7 @@ export default function WriterLayout() {
           <div className="flex items-center gap-4">
             <span className="text-muted text-sm">Writer</span>
             <button className="btn btn-outline rounded-full px-3 py-1">Notifications</button>
-            <button className="btn btn-accent rounded-full px-3 py-1">Logout</button>
+            <button className="btn btn-accent rounded-full px-3 py-1" onClick={handleLogout}>Logout</button>
           </div>
         </header>
         <main className="flex-1 p-4 md:p-8">
