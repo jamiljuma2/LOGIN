@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lora:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sidebar-width: 260px;
+}
+
+body {
+  font-family: 'Merriweather', 'Lora', serif;
+  background-color: theme('colors.background');
+  color: theme('colors.text');
+}
+
+/* Basic utility classes */
+.container-padded {
+  @apply max-w-7xl mx-auto px-3 sm:px-6 lg:px-8;
+}
+
+.card {
+  @apply bg-white border border-gray-200 rounded-lg shadow-sm;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors;
+}
+.btn-primary {
+  @apply bg-brand-500 text-white hover:bg-brand-600 focus:ring-2 focus:ring-accent;
+}
+.btn-outline {
+  @apply border border-brand-500 text-brand-500 bg-white hover:bg-brand-50 focus:ring-2 focus:ring-accent;
+}
+.btn-accent {
+  @apply bg-accent text-brand-700 hover:bg-yellow-300 focus:ring-2 focus:ring-accent;
+}
+.input {
+  @apply w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500;
+}
+.label {
+  @apply text-sm font-medium text-brand-700;
+}
