@@ -1,3 +1,5 @@
+import { useToast } from '../../components/ToastProvider'
+
 export default function Notifications() {
   const notes = [
     { id: 'n1', text: 'Assignment approved' },
@@ -5,6 +7,12 @@ export default function Notifications() {
     { id: 'n3', text: 'Submission uploaded' },
     { id: 'n4', text: 'Payment released' },
   ]
+  const { showToast } = useToast();
+
+  function handleView(note: any) {
+    showToast({ type: 'info', message: `Notification: ${note.text}` });
+  }
+
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Notifications</h1>
@@ -12,7 +20,7 @@ export default function Notifications() {
         {notes.map(n => (
           <div key={n.id} className="flex items-center justify-between">
             <span>{n.text}</span>
-            <button className="btn btn-outline">View</button>
+            <button className="btn btn-outline" onClick={() => handleView(n)}>View</button>
           </div>
         ))}
       </div>

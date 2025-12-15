@@ -1,10 +1,17 @@
+
 import { useState } from 'react'
 import { assignments } from '../../lib/mockData'
 import Badge from '../../components/Badge'
+import { useToast } from '../../components/ToastProvider'
 
-export default function MyAssignments() {
-  const [tab, setTab] = useState<'Pending Approval'|'Approved'|'In Progress'|'Completed'>('Pending Approval')
-  const list = assignments.filter(a => a.status === tab)
+const MyAssignments = () => {
+  const [tab, setTab] = useState<'Pending Approval'|'Approved'|'In Progress'|'Completed'>('Pending Approval');
+  const list = assignments.filter(a => a.status === tab);
+  const { showToast } = useToast();
+
+  function handleViewDetails(item: any) {
+    showToast({ type: 'info', message: `Viewing details for: ${item.title}` });
+  }
 
   return (
     <div className="space-y-4">
@@ -26,12 +33,14 @@ export default function MyAssignments() {
               <span>Budget: ${item.budget}</span>
             </div>
             <div className="pt-2">
-              <button className="btn btn-outline">View Details</button>
+              <button className="btn btn-outline" onClick={() => handleViewDetails(item)}>View Details</button>
             </div>
           </div>
         ))}
         {list.length === 0 && <p className="text-sm text-gray-600">No assignments in this tab.</p>}
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default MyAssignments;
