@@ -14,8 +14,13 @@ export default function Footer() {
           <Link to="/contact" className="hover:text-brand-600 transition-colors">Contact</Link>
           <Link to="/privacy" className="hover:text-brand-600 transition-colors">Privacy</Link>
         </nav>
-        <div className="text-xs text-gray-400 text-center sm:text-right">
-          &copy; {new Date().getFullYear()} EduLink Writers. All rights reserved.
+        <div className="flex flex-col items-center sm:items-end gap-1">
+          <div className="text-xs text-gray-700">
+            <span className="font-semibold">Contact Us:</span> <a href="mailto:support@edulinkwriters.com" className="text-brand-600 underline">support@edulinkwriters.com</a>
+          </div>
+          <div className="text-xs text-gray-400 text-center sm:text-right">
+            &copy; {new Date().getFullYear()} EduLink Writers. All rights reserved.
+          </div>
         </div>
       </div>
     </footer>
