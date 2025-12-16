@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useToast } from '../../components/ToastProvider'
 import { Link, useNavigate } from 'react-router-dom'
 
+export default function Register() {
   const { showToast } = useToast()
   const nav = useNavigate()
   const [name, setName] = useState('')
