@@ -24,11 +24,7 @@ export default function Landing() {
             <div className="flex gap-4 mt-2">
               <Link
                 to="/auth/register"
-                className="text-base px-6 py-2 rounded-full shadow font-semibold text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"
-                style={{
-                  background: 'linear-gradient(90deg, #28A745 0%, #32CD32 100%)',
-                  border: 'none',
-                }}
+                className="text-base px-6 py-2 rounded-full font-medium text-white bg-blue-600 hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300 border-0 shadow-sm"
               >
                 Get Started
               </Link>
