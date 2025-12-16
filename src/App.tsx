@@ -2,6 +2,9 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { ToastProvider } from './components/ToastProvider'
 import Navbar from './components/Navbar'
 import Landing from './pages/Landing'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Privacy from './pages/Privacy'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import ForgotPassword from './pages/auth/ForgotPassword'
@@ -35,8 +38,11 @@ export default function App() {
         <Navbar />
         <div className="flex-1">
           <Routes>
-            {/* Landing & Auth */}
+            {/* Landing & Auth & Info */}
             <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/forgot" element={<ForgotPassword />} />
