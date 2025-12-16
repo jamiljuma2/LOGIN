@@ -34,6 +34,11 @@ export default function WriterLayout() {
             <div className="flex items-center gap-2">
               {/* Mobile sidebar toggle button */}
               <button className="md:hidden mr-2 text-2xl min-h-[44px]" onClick={() => setSidebarOpen(true)} aria-label="Open main navigation sidebar" tabIndex={0}>☰</button>
+              <a href="/" aria-label="Home" className="flex items-center rounded-full bg-brand-50 hover:bg-brand-100 p-1 shadow transition">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-7 h-7 text-brand-600">
+                  <path d="M10.707 2.293a1 1 0 0 0-1.414 0l-7 7A1 1 0 0 0 3 11h1v5a2 2 0 0 0 2 2h2a1 1 0 0 0 1-1v-3h2v3a1 1 0 0 0 1 1h2a2 2 0 0 0 2-2v-5h1a1 1 0 0 0 .707-1.707l-7-7z" />
+                </svg>
+              </a>
               <img src="/edulink-logo.svg" alt="EduLink Writers Logo" className="w-8 h-8" />
               <span className="font-bold text-brand-500 font-serif text-lg">EduLink Writers</span>
             </div>
