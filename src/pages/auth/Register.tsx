@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useToast } from '../../components/ToastProvider'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-export default function Register() {
   const { showToast } = useToast()
+  const nav = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -15,6 +15,7 @@ export default function Register() {
     setLoading(true)
     await new Promise(r => setTimeout(r, 1000))
     showToast({ type: 'success', message: 'Registration successful! You can now log in.' })
+    setTimeout(() => nav('/auth/login'), 800)
   }
 
   return (
