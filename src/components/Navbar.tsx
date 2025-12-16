@@ -16,9 +16,6 @@ export default function Navbar() {
           <Link to="/" className="font-semibold text-brand-700">AssignConnect</Link>
         </div>
         <nav className="flex gap-4 text-sm">
-          <Link className="hover:text-brand-700" to="/about">About</Link>
-          <Link className="hover:text-brand-700" to="/contact">Contact</Link>
-          <Link className="hover:text-brand-700" to="/privacy">Privacy</Link>
           <Link className="hover:text-brand-700" to="/auth/login">Login</Link>
           <Link className="hover:text-brand-700" to="/auth/register">Register</Link>
         </nav>
