@@ -9,6 +9,7 @@ const features = [
   { label: 'Confidential & Reliable', icon: '🔒' },
 ]
 
+export default function Landing() {
   return (
     <div className="flex flex-col min-h-screen">
       <section className="container-padded py-12 flex-1 flex flex-col justify-center">
