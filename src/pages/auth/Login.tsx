@@ -13,9 +13,30 @@ export default function Login() {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
-    showToast({ type: 'success', message: 'Logged in (UI only)' })
-    nav(role === 'writer' ? '/writer/available-tasks' : '/student/post-assignment')
+    try {
+      const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role }),
+      })
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(error || 'Login failed')
+      }
+      const data = await response.json()
+      // Save the access token (adjust key if backend returns a different property)
+      if (data.access) {
+        localStorage.setItem('access', data.access)
+        showToast({ type: 'success', message: 'Login successful!' })
+        nav(role === 'writer' ? '/writer/available-tasks' : '/student/post-assignment')
+      } else {
+        throw new Error('No access token returned')
+      }
+    } catch (err: any) {
+      showToast({ type: 'error', message: err.message || 'Login failed' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
