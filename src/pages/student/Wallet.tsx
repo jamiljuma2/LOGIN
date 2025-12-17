@@ -13,8 +13,12 @@ export default function Wallet() {
   async function topUp() {
     if (!phone || !amount) return showToast({ type: 'error', message: 'Enter phone and amount' })
     setOpen(true)
-    await triggerLipanaSTK({ phoneNumber: phone, amount: Number(amount) })
-    showToast({ type: 'success', message: 'STK Push request sent' })
+    try {
+      await triggerLipanaSTK({ phoneNumber: phone, amount: Number(amount) })
+      showToast({ type: 'success', message: 'STK Push request sent' })
+    } catch (err: any) {
+      showToast({ type: 'error', message: err.message || 'Failed to send STK Push' })
+    }
   }
 
   return (

@@ -14,9 +14,14 @@ export default function Subscription() {
     if (!phone) return showToast({ type: 'error', message: 'Enter Safaricom number' })
     setOpen(true)
     setLoading('Sending...')
-    await triggerLipanaSTK({ phoneNumber: phone, amount })
-    setLoading(null)
-    showToast({ type: 'success', message: 'STK Push Sent' })
+    try {
+      await triggerLipanaSTK({ phoneNumber: phone, amount })
+      showToast({ type: 'success', message: 'STK Push Sent' })
+    } catch (err: any) {
+      showToast({ type: 'error', message: err.message || 'Failed to send STK Push' })
+    } finally {
+      setLoading(null)
+    }
   }
 
   return (
