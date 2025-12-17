@@ -25,12 +25,13 @@ export default function Login() {
       }
       const data = await response.json()
       // Save the access token (adjust key if backend returns a different property)
-      if (data.access) {
+      if (data.access && data.refresh) {
         localStorage.setItem('access', data.access)
+        localStorage.setItem('refresh', data.refresh)
         showToast({ type: 'success', message: 'Login successful!' })
         nav(role === 'writer' ? '/writer/available-tasks' : '/student/post-assignment')
       } else {
-        throw new Error('No access token returned')
+        throw new Error('No access or refresh token returned')
       }
     } catch (err: any) {
       showToast({ type: 'error', message: err.message || 'Login failed' })
