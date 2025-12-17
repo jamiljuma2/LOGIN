@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function Register() {
   const { showToast } = useToast()
   const nav = useNavigate()
-  const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -19,7 +18,7 @@ export default function Register() {
       const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, username, email, password, role }),
+        body: JSON.stringify({ username, email, password, role: role.toUpperCase() }),
       })
       if (!response.ok) {
         const error = await response.text()
@@ -43,10 +42,7 @@ export default function Register() {
             <span className="text-xl font-bold text-brand-500 font-serif">EduLink Writers</span>
           </div>
           <h2 className="text-2xl font-bold text-brand-700 font-serif text-center">Create your account</h2>
-          <div>
-            <label className="label">Full Name</label>
-            <input className="input" value={name} onChange={e => setName(e.target.value)} required autoFocus autoComplete="name" />
-          </div>
+          {/* Full Name field removed as backend does not require it */}
           <div>
             <label className="label">Username</label>
             <input className="input" value={username} onChange={e => setUsername(e.target.value)} required autoComplete="username" />
