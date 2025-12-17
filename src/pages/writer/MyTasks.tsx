@@ -16,6 +16,7 @@ const sample = {
   ],
 }
 
+export default function MyTasks() {
   if (!writerSubscription.active) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[40vh]">
