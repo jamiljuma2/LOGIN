@@ -6,6 +6,7 @@ export default function Register() {
   const { showToast } = useToast()
   const nav = useNavigate()
   const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState<'writer'|'student'>('student')
@@ -14,9 +15,23 @@ export default function Register() {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1000))
-    showToast({ type: 'success', message: 'Registration successful! You can now log in.' })
-    setTimeout(() => nav('/auth/login'), 800)
+    try {
+      const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, username, email, password, role }),
+      })
+      if (!response.ok) {
+        const error = await response.text()
+        throw new Error(error || 'Registration failed')
+      }
+      showToast({ type: 'success', message: 'Registration successful! You can now log in.' })
+      setTimeout(() => nav('/auth/login'), 800)
+    } catch (err: any) {
+      showToast({ type: 'error', message: err.message || 'Registration failed' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -31,6 +46,10 @@ export default function Register() {
           <div>
             <label className="label">Full Name</label>
             <input className="input" value={name} onChange={e => setName(e.target.value)} required autoFocus autoComplete="name" />
+          </div>
+          <div>
+            <label className="label">Username</label>
+            <input className="input" value={username} onChange={e => setUsername(e.target.value)} required autoComplete="username" />
           </div>
           <div>
             <label className="label">Email</label>

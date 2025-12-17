@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function Login() {
   const { showToast } = useToast()
   const nav = useNavigate()
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState<'writer'|'student'>('student')
   const [loading, setLoading] = useState(false)
@@ -17,7 +17,7 @@ export default function Login() {
       const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify({ username, password, role }),
       })
       if (!response.ok) {
         const error = await response.text()
@@ -50,8 +50,8 @@ export default function Login() {
           </div>
           <h2 className="text-2xl font-bold text-brand-700 font-serif text-center">Sign in to your account</h2>
           <div>
-            <label className="label">Email</label>
-            <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)} required autoFocus autoComplete="email" />
+            <label className="label">Username</label>
+            <input className="input" type="text" value={username} onChange={e => setUsername(e.target.value)} required autoFocus autoComplete="username" />
           </div>
           <div>
             <label className="label">Password</label>
