@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { subscriptionPlans } from '../../lib/mockData'
+import { subscriptionPlans, writerSubscription } from '../../lib/mockData'
 import { triggerLipanaSTK } from '../../lib/api'
 import { useToast } from '../../components/ToastProvider'
 import STKPushModal from '../../components/STKPushModal'
@@ -10,13 +10,17 @@ export default function Subscription() {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState<string | null>(null)
 
-  async function pay(amount: number) {
+  async function pay(amount: number, planId: string, planLimit: number) {
     if (!phone) return showToast({ type: 'error', message: 'Enter Safaricom number' })
     setOpen(true)
     setLoading('Sending...')
     try {
       await triggerLipanaSTK({ phoneNumber: phone, amount })
-      showToast({ type: 'success', message: 'STK Push Sent' })
+      // Activate subscription (mock)
+      writerSubscription.active = true;
+      writerSubscription.plan = planId;
+      writerSubscription.limit = planLimit;
+      showToast({ type: 'success', message: 'Subscription activated! You can now access tasks.' })
     } catch (err: any) {
       showToast({ type: 'error', message: err.message || 'Failed to send STK Push' })
     } finally {
@@ -38,7 +42,7 @@ export default function Subscription() {
               <label className="label">Enter Safaricom Number</label>
               <input className="input" placeholder="07XXXXXXXX" value={phone} onChange={e => setPhone(e.target.value)} />
             </div>
-            <button className="btn btn-primary" onClick={() => pay(p.price)}>
+            <button className="btn btn-primary" onClick={() => pay(p.price, p.id, p.limit)}>
               Pay with M-Pesa (Lipana STK)
             </button>
           </div>

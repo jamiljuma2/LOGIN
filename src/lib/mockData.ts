@@ -1,3 +1,9 @@
+// Mock: writer subscription status (in real app, fetch from backend/user profile)
+export let writerSubscription = {
+  active: false,
+  plan: null, // e.g., 'basic', 'plus', 'premium'
+  limit: 0,
+};
 export const subscriptionPlans = [
   { id: 'basic', price: 2, label: 'Access 5 tasks/day', limit: 5 },
   { id: 'plus', price: 5, label: 'Access 9 tasks/day', limit: 9 },

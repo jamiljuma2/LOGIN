@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { writerSubscription } from '../../lib/mockData'
 import ProgressBar from '../../components/ProgressBar'
 import Badge from '../../components/Badge'
 
@@ -15,10 +16,17 @@ const sample = {
   ],
 }
 
-export default function MyTasks() {
+  if (!writerSubscription.active) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[40vh]">
+        <h2 className="text-xl font-semibold mb-2">Subscription Required</h2>
+        <p className="mb-4">You must pay for a subscription to access your tasks.</p>
+        <a href="/writer/subscription" className="btn btn-primary">Go to Subscription</a>
+      </div>
+    )
+  }
   const [tab, setTab] = useState<'In Progress'|'Submitted'|'Completed'>('In Progress')
   const list = tab === 'In Progress' ? sample.inProgress : tab === 'Submitted' ? sample.submitted : sample.completed
-
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">My Tasks</h1>
