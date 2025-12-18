@@ -13,6 +13,7 @@ export async function mockLoginUser({ username, password, role }: { username: st
   const refresh = 'mock-refresh-token';
   localStorage.setItem('access', access);
   localStorage.setItem('refresh', refresh);
+  localStorage.setItem('sessionTimestamp', Date.now().toString());
   await mockFetch(true, 600);
   return { access, refresh };
 }
@@ -29,26 +30,24 @@ export async function mockRegisterUser({ username, email, password, role }: { us
   await mockFetch(true, 800);
   return { success: true };
 }
-// Refresh the access token using the refresh token
+// Mock refresh access token: always succeed and return a mock token
+// Simulate session expiration after 10 minutes (600000 ms)
 export async function refreshAccessToken() {
-  const refresh = localStorage.getItem('refresh');
-  if (!refresh) throw new Error('No refresh token available');
-  const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/refresh', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ refresh }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to refresh access token');
+  const sessionTimestamp = localStorage.getItem('sessionTimestamp');
+  const now = Date.now();
+  const maxSession = 10 * 60 * 1000; // 10 minutes
+  if (sessionTimestamp && now - parseInt(sessionTimestamp, 10) > maxSession) {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('sessionTimestamp');
+    await mockFetch(true, 300);
+    throw new Error('Session expired. Please log in again.');
   }
-  const data = await response.json();
-  if (data.access) {
-    localStorage.setItem('access', data.access);
-    return data.access;
-  } else {
-    throw new Error('No access token returned');
-  }
+  const access = 'mock-access-token';
+  localStorage.setItem('access', access);
+  localStorage.setItem('sessionTimestamp', now.toString());
+  await mockFetch(true, 300);
+  return access;
 }
 export async function triggerLipanaSTK({ phoneNumber, amount }: { phoneNumber: string; amount: number }) {
   let token = localStorage.getItem('access');
