@@ -33,11 +33,11 @@ export default function Wallet() {
         <h3 className="font-medium">Top Up Using M-Pesa</h3>
         <div>
           <label className="label">Safaricom Phone Number</label>
-          <input className="input" placeholder="07XXXXXXXX" value={phone} onChange={e => setPhone(e.target.value)} />
+          <input className="input" placeholder="07XXXXXXXX" value={phone} onChange={e => setPhone(e.target.value)} autoComplete="off" />
         </div>
         <div>
           <label className="label">Amount</label>
-          <input className="input" type="number" placeholder="100" value={amount} onChange={e => setAmount(e.target.value)} />
+          <input className="input" type="number" placeholder="100" value={amount} onChange={e => setAmount(e.target.value)} autoComplete="off" />
         </div>
         <button className="btn btn-primary" onClick={topUp}>Pay with M-Pesa</button>
       </div>

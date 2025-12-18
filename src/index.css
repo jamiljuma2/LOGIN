@@ -1,3 +1,9 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Modern UI Button Styles */
 .btn-modern {
   @apply px-6 py-2 rounded-full font-semibold text-white bg-blue-600 shadow-md transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2;
@@ -14,10 +20,6 @@
 .btn-modern:focus-visible {
   @apply ring-2 ring-blue-400 ring-offset-2;
 }
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Shared input and button styles for Contact form */
 .label {

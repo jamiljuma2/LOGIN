@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useToast } from '../../components/ToastProvider'
 import { Link, useNavigate } from 'react-router-dom'
+import { mockLoginUser } from '../../lib/api'
 
 export default function Login() {
   const { showToast } = useToast()
@@ -14,25 +15,9 @@ export default function Login() {
     e.preventDefault()
     setLoading(true)
     try {
-      const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, role }),
-      })
-      if (!response.ok) {
-        const error = await response.text()
-        throw new Error(error || 'Login failed')
-      }
-      const data = await response.json()
-      // Save the access token (adjust key if backend returns a different property)
-      if (data.access && data.refresh) {
-        localStorage.setItem('access', data.access)
-        localStorage.setItem('refresh', data.refresh)
-        showToast({ type: 'success', message: 'Login successful!' })
-        nav(role === 'writer' ? '/writer/available-tasks' : '/student/post-assignment')
-      } else {
-        throw new Error('No access or refresh token returned')
-      }
+      const data = await mockLoginUser({ username, password, role })
+      showToast({ type: 'success', message: 'Login successful!' })
+      nav(role === 'writer' ? '/writer/available-tasks' : '/student/post-assignment')
     } catch (err: any) {
       showToast({ type: 'error', message: err.message || 'Login failed' })
     } finally {

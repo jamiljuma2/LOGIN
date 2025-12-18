@@ -1,3 +1,34 @@
+// Mock user login
+export async function mockLoginUser({ username, password, role }: { username: string; password: string; role: string }) {
+  // Simulate login delay and basic validation
+  if (!username || !password) {
+    return Promise.reject(new Error('Username and password required'));
+  }
+  // Simulate login failure for unknown user
+  if (username === 'unknown') {
+    return Promise.reject(new Error('Invalid username or password'));
+  }
+  // Simulate token
+  const access = 'mock-access-token';
+  const refresh = 'mock-refresh-token';
+  localStorage.setItem('access', access);
+  localStorage.setItem('refresh', refresh);
+  await mockFetch(true, 600);
+  return { access, refresh };
+}
+// Mock user registration
+export async function mockRegisterUser({ username, email, password, role }: { username: string; email: string; password: string; role: string }) {
+  // Simulate a registration delay and basic validation
+  if (!username || !email || !password) {
+    return Promise.reject(new Error('All fields are required'));
+  }
+  // Simulate duplicate user error
+  if (username === 'existinguser') {
+    return Promise.reject(new Error('Username already exists'));
+  }
+  await mockFetch(true, 800);
+  return { success: true };
+}
 // Refresh the access token using the refresh token
 export async function refreshAccessToken() {
   const refresh = localStorage.getItem('refresh');

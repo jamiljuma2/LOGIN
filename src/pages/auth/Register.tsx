@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useToast } from '../../components/ToastProvider'
+
 import { Link, useNavigate } from 'react-router-dom'
+import { mockRegisterUser } from '../../lib/api'
 
 export default function Register() {
   const { showToast } = useToast()
@@ -15,15 +17,7 @@ export default function Register() {
     e.preventDefault()
     setLoading(true)
     try {
-      const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password, role: role.toUpperCase() }),
-      })
-      if (!response.ok) {
-        const error = await response.text()
-        throw new Error(error || 'Registration failed')
-      }
+      await mockRegisterUser({ username, email, password, role: role.toUpperCase() })
       showToast({ type: 'success', message: 'Registration successful! You can now log in.' })
       setTimeout(() => nav('/auth/login'), 800)
     } catch (err: any) {
