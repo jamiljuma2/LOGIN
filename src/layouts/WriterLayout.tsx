@@ -4,7 +4,8 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import { useToast } from '../components/ToastProvider'
 import Footer from '../components/Footer'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { logoutUser, getCurrentUser } from '../lib/api'
 
 export default function WriterLayout() {
   const items = [
@@ -20,9 +21,27 @@ export default function WriterLayout() {
   const { showToast } = useToast();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  function handleLogout() {
-    showToast({ type: 'success', message: 'Logged out' });
-    nav('/auth/login');
+
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    getCurrentUser()
+      .then(setUser)
+      .catch(() => {
+        showToast({ type: 'error', message: 'Session expired. Please log in.' });
+        nav('/auth/login');
+      });
+    // eslint-disable-next-line
+  }, []);
+
+  async function handleLogout() {
+    try {
+      await logoutUser();
+      showToast({ type: 'success', message: 'Logged out' });
+    } catch (err: any) {
+      showToast({ type: 'error', message: err.message || 'Logout failed' });
+    } finally {
+      nav('/auth/login');
+    }
   }
 
   return (
@@ -43,7 +62,7 @@ export default function WriterLayout() {
               <span className="font-bold text-brand-500 font-serif text-lg">EduLink Writers</span>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 w-full sm:w-auto">
-              <span className="text-muted text-sm">Writer</span>
+              <span className="text-muted text-sm">{user ? user.username : 'Writer'}</span>
               <button className="btn btn-outline rounded-full px-3 py-1 min-h-[44px]">Notifications</button>
               <button className="btn btn-accent rounded-full px-3 py-1 min-h-[44px]" onClick={handleLogout}>Logout</button>
             </div>

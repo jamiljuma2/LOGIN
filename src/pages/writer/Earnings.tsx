@@ -1,14 +1,27 @@
-import { useState } from 'react';
-import { submitWithdrawalRequest } from '../../lib/withdrawals';
+import { useState, useEffect } from 'react';
+import { getEarnings, submitWithdrawalRequest, getWithdrawals } from '../../lib/api';
 import Modal from '../../components/Modal';
 import { useToast } from '../../components/ToastProvider';
 
 export default function Earnings() {
-  const payments = [
-    { id: 'p1', title: 'Essay on AI', amount: 25, date: '2025-12-05' },
-    { id: 'p2', title: 'Statistics Homework', amount: 40, date: '2025-12-07' },
-  ];
-  const balance = 180;
+  const [payments, setPayments] = useState<any[]>([]);
+  const [balance, setBalance] = useState<number>(0);
+  const [withdrawals, setWithdrawals] = useState<any[]>([]);
+
+  useEffect(() => {
+    getEarnings()
+      .then(data => {
+        setPayments(data.payments || []);
+        setBalance(data.balance || 0);
+      })
+      .catch(() => {
+        setPayments([]);
+        setBalance(0);
+      });
+    getWithdrawals()
+      .then(setWithdrawals)
+      .catch(() => setWithdrawals([]));
+  }, []);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [amount, setAmount] = useState('');
   const [method, setMethod] = useState('mpesa');
@@ -35,7 +48,6 @@ export default function Earnings() {
     try {
       // TODO: Replace 'WriterX' with actual logged-in writer username/id
       await submitWithdrawalRequest({
-        writer: 'WriterX',
         amount: amt,
         method,
         details,

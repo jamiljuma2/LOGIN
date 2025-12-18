@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useToast } from '../../components/ToastProvider'
 import { Link, useNavigate } from 'react-router-dom'
-import { mockLoginUser } from '../../lib/api'
+import { loginUser } from '../../lib/api'
 
 export default function Login() {
   const { showToast } = useToast()
@@ -15,7 +15,7 @@ export default function Login() {
     e.preventDefault()
     setLoading(true)
     try {
-      const data = await mockLoginUser({ username, password, role })
+      const data = await loginUser({ username, password, role })
       showToast({ type: 'success', message: 'Login successful!' })
       nav(role === 'writer' ? '/writer/available-tasks' : '/student/post-assignment')
     } catch (err: any) {

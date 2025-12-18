@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { subscriptionPlans, writerSubscription } from '../../lib/mockData'
-import { triggerLipanaSTK } from '../../lib/api'
+import { subscriptionPlans } from '../../lib/mockData'
+import { paySubscription, getSubscriptionStatus } from '../../lib/api'
 import { useToast } from '../../components/ToastProvider'
 import STKPushModal from '../../components/STKPushModal'
 
@@ -10,17 +10,13 @@ export default function Subscription() {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState<string | null>(null)
 
-  async function pay(amount: number, planId: string, planLimit: number) {
+  async function pay(amount: number) {
     if (!phone) return showToast({ type: 'error', message: 'Enter Safaricom number' })
     setOpen(true)
     setLoading('Sending...')
     try {
-      await triggerLipanaSTK({ phoneNumber: phone, amount })
-      // Activate subscription (mock)
-      writerSubscription.active = true;
-      writerSubscription.plan = planId;
-      writerSubscription.limit = planLimit;
-      showToast({ type: 'success', message: 'Subscription activated! You can now access tasks.' })
+      await paySubscription({ phone, amount })
+      showToast({ type: 'success', message: 'Subscription payment initiated! Check your phone.' })
     } catch (err: any) {
       showToast({ type: 'error', message: err.message || 'Failed to send STK Push' })
     } finally {

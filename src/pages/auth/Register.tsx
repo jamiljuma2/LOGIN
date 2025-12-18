@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useToast } from '../../components/ToastProvider'
 
 import { Link, useNavigate } from 'react-router-dom'
-import { mockRegisterUser } from '../../lib/api'
+import { registerUser } from '../../lib/api'
 
 export default function Register() {
   const { showToast } = useToast()
@@ -17,7 +17,7 @@ export default function Register() {
     e.preventDefault()
     setLoading(true)
     try {
-      await mockRegisterUser({ username, email, password, role: role.toUpperCase() })
+      await registerUser({ username, email, password, role: role.toUpperCase() })
       showToast({ type: 'success', message: 'Registration successful! You can now log in.' })
       setTimeout(() => nav('/auth/login'), 800)
     } catch (err: any) {

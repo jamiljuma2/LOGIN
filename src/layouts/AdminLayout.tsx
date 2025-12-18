@@ -2,7 +2,8 @@ import Footer from '../components/Footer'
 
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { logoutUser, getCurrentUser } from '../lib/api'
 
 export default function AdminLayout() {
   const items = [
@@ -15,6 +16,26 @@ export default function AdminLayout() {
     { to: '/admin/settings', label: 'Settings' },
   ]
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const nav = typeof window !== 'undefined' ? require('react-router-dom').useNavigate() : () => {};
+  useEffect(() => {
+    getCurrentUser()
+      .then(setUser)
+      .catch(() => {
+        // No toast here since admin may not have toast
+        nav('/auth/login');
+      });
+    // eslint-disable-next-line
+  }, []);
+
+  async function handleLogout() {
+    try {
+      await logoutUser();
+    } finally {
+      nav('/auth/login');
+    }
+  }
+
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar title="Admin" items={items} mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
@@ -33,9 +54,9 @@ export default function AdminLayout() {
               <span className="font-bold text-brand-500 font-serif text-lg">EduLink Writers</span>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4 w-full sm:w-auto">
-              <span className="text-muted text-sm">Admin</span>
+              <span className="text-muted text-sm">{user ? user.username : 'Admin'}</span>
               <button className="btn btn-outline rounded-full px-3 py-1 min-h-[44px]">Notifications</button>
-              <button className="btn btn-accent rounded-full px-3 py-1 min-h-[44px]">Logout</button>
+              <button className="btn btn-accent rounded-full px-3 py-1 min-h-[44px]" onClick={handleLogout}>Logout</button>
             </div>
           </header>
           <main className="flex-1 py-4 md:py-8">
