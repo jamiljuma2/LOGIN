@@ -1,7 +1,7 @@
 export default function AdminUsers() {
   const rows = [
-    { id: 'u1', name: 'Alice', role: 'Student' },
-    { id: 'u2', name: 'WriterX', role: 'Writer' },
+    { id: 'u1', name: 'Alice', role: 'STUDENT' },
+    { id: 'u2', name: 'WriterX', role: 'WRITER' },
   ]
   return (
     <div className="space-y-8">
