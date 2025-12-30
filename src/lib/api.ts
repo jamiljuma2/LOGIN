@@ -83,50 +83,7 @@ export async function refreshAccessToken() {
   localStorage.setItem('sessionTimestamp', Date.now().toString());
   return mockFetch('mock-access');
 }
-    const error = await response.text();
-    throw new Error(error || 'Failed to initiate subscription payment');
-      // Mock: simulate payment
-      return mockFetch({ success: true, phone, amount });
-    },
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to fetch subscription status');
-  }
-      // Mock: return writerSubscription
-      return mockFetch(writerSubscription);
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to fetch earnings');
-  }
-  return await response.json();
-      // Mock: return a fake earnings object
-      return mockFetch({ total: 1234, available: 567 });
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to fetch withdrawals');
-  }
-  return await response.json();
-      // Mock: return assignments as withdrawals
-      return mockFetch(assignments);
-    body: JSON.stringify({ amount, method, details }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to submit withdrawal request');
-  }
-      // Mock: simulate withdrawal request
-      return mockFetch({ amount, method, details, id: 'mock', status: 'pending' });
-  localStorage.removeItem('access');
-  localStorage.removeItem('refresh');
-  localStorage.removeItem('sessionTimestamp');
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Logout failed');
-  }
-  return true;
+// (Removed unreachable and duplicate fetch/response/error code. Only mock API functions remain.)
 }
 
 // Get current user (production)
