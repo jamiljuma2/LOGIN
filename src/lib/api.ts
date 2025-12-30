@@ -77,7 +77,7 @@ export async function loginUser({ username, password, role }: { username: string
   const exists = mockUsers.some(u => u.username === username || u.email === email);
   if (exists) {
     return Promise.reject(new Error('Account already exists with that username or email.'));
-  }
+  // End of registerUser
   mockUsers.push({ username, email, password, role });
   return mockFetch({ username, email, role });
 }
