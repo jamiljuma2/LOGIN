@@ -4,7 +4,6 @@ import { assignments, availableTasks, writerSubscription, subscriptionPlans, moc
 export async function mockFetch<T>(data: T, delay = 600): Promise<T> {
   await new Promise(r => setTimeout(r, delay));
   return data;
-}
 
 // Mock: Simulate M-Pesa STK Push
 export async function triggerLipanaSTK({ phoneNumber, amount }: { phoneNumber: string; amount: number }) {
