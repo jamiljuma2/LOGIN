@@ -1,32 +1,88 @@
-// Production: Admin - list all withdrawals
+import { assignments, availableTasks, writerSubscription, subscriptionPlans } from './mockData';
+
+// Simulate async fetch
+export async function mockFetch<T>(data: T, delay = 600): Promise<T> {
+  await new Promise(r => setTimeout(r, delay));
+  return data;
+}
+
+// Mock: Simulate M-Pesa STK Push
+export async function triggerLipanaSTK({ phoneNumber, amount }: { phoneNumber: string; amount: number }) {
+  return mockFetch({ success: true, phoneNumber, amount });
+}
+
+// Mock: Simulate wallet info fetch
+export async function getWalletInfo() {
+  return mockFetch({ balance: 1000 });
+}
+
+// Mock: Admin - list all withdrawals
 export async function getAllWithdrawals() {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch('https://pl-project-8aks.onrender.com/api/admin/withdrawals/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    import { assignments, availableTasks, writerSubscription, subscriptionPlans, mockFetch } from './mockData';
-  });
-  if (!response.ok) {
-    export async function getAllWithdrawals() { 
-    throw new Error(error || 'Failed to fetch admin withdrawals');
-  }
-      // Mock: return all assignments as withdrawals
-      return mockFetch(assignments);
-    },
-    body: JSON.stringify({ action }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to update withdrawal');
-      // Mock: just return the assignment with updated status
-      return mockFetch({ id, action });
-    },
-    body: JSON.stringify({ phone, amount }),
-  });
-  if (!response.ok) {
+  return mockFetch(assignments);
+}
+
+// Mock: Admin - approve/reject withdrawal
+export async function adminWithdrawalAction(id: string, action: 'approve' | 'reject') {
+  return mockFetch({ id, action });
+}
+
+// Mock: Trigger STK Push for subscription
+export async function paySubscription({ phone, amount }: { phone: string; amount: number }) {
+  return mockFetch({ success: true, phone, amount });
+}
+
+// Mock: Get subscription status
+export async function getSubscriptionStatus() {
+  return mockFetch(writerSubscription);
+}
+
+// Mock: Get user earnings
+export async function getEarnings() {
+  return mockFetch({ total: 1234, available: 567 });
+}
+
+// Mock: List user withdrawals
+export async function getWithdrawals() {
+  return mockFetch(assignments);
+}
+
+// Mock: Submit withdrawal request
+export async function submitWithdrawalRequest({ amount, method, details }: { amount: number; method: string; details: string }) {
+  return mockFetch({ amount, method, details, id: 'mock', status: 'pending' });
+}
+
+// Mock: Logout user
+export async function logoutUser() {
+  localStorage.removeItem('access');
+  localStorage.removeItem('refresh');
+  localStorage.removeItem('sessionTimestamp');
+  return mockFetch(true);
+}
+
+// Mock: Get current user
+export async function getCurrentUser() {
+  return mockFetch({ username: 'mockuser', role: 'student', email: 'mock@example.com' });
+}
+
+// Mock: User login
+export async function loginUser({ username, password, role }: { username: string; password: string; role: string }) {
+  localStorage.setItem('access', 'mock-access');
+  localStorage.setItem('refresh', 'mock-refresh');
+  localStorage.setItem('sessionTimestamp', Date.now().toString());
+  return mockFetch({ access: 'mock-access', refresh: 'mock-refresh' });
+}
+
+// Mock: User registration
+export async function registerUser({ username, email, password, role }: { username: string; email: string; password: string; role: string }) {
+  return mockFetch({ username, email, role });
+}
+
+// Mock: Refresh access token
+export async function refreshAccessToken() {
+  localStorage.setItem('access', 'mock-access');
+  localStorage.setItem('sessionTimestamp', Date.now().toString());
+  return mockFetch('mock-access');
+}
     const error = await response.text();
     throw new Error(error || 'Failed to initiate subscription payment');
       // Mock: simulate payment
