@@ -1,9 +1,10 @@
 import { useState } from 'react'
+import { useToast } from '../../components/ToastProvider'
 import { writerSubscription } from '../../lib/mockData'
 import ProgressBar from '../../components/ProgressBar'
 import Badge from '../../components/Badge'
 
-const sample = {
+const initialSample = {
   inProgress: [
     { id: 'ip1', title: 'Essay on AI', progress: 40 },
     { id: 'ip2', title: 'Business Plan Draft', progress: 70 },
@@ -26,8 +27,24 @@ export default function MyTasks() {
       </div>
     )
   }
-  const [tab, setTab] = useState<'In Progress'|'Submitted'|'Completed'>('In Progress')
-  const list = tab === 'In Progress' ? sample.inProgress : tab === 'Submitted' ? sample.submitted : sample.completed
+  const { showToast } = useToast();
+  const [tab, setTab] = useState<'In Progress'|'Submitted'|'Completed'>('In Progress');
+  const [tasks, setTasks] = useState(initialSample);
+  const list = tab === 'In Progress' ? tasks.inProgress : tab === 'Submitted' ? tasks.submitted : tasks.completed;
+
+  function handleSubmitTask(id: string) {
+    // Move task from inProgress to submitted
+    setTasks(prev => {
+      const task = prev.inProgress.find(t => t.id === id);
+      if (!task) return prev;
+      return {
+        ...prev,
+        inProgress: prev.inProgress.filter(t => t.id !== id),
+        submitted: [...prev.submitted, { ...task, progress: 100 }],
+      };
+    });
+    showToast({ type: 'success', message: 'Task submitted!' });
+  }
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">My Tasks</h1>
@@ -46,7 +63,9 @@ export default function MyTasks() {
             <ProgressBar value={item.progress} />
             <div className="flex gap-2 pt-2">
               <button className="btn btn-outline">View</button>
-              {tab === 'In Progress' && <button className="btn btn-primary">Submit</button>}
+              {tab === 'In Progress' && (
+                <button className="btn btn-primary" onClick={() => handleSubmitTask(item.id)}>Submit</button>
+              )}
             </div>
           </div>
         ))}
