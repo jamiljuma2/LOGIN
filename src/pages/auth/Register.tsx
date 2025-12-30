@@ -10,11 +10,16 @@ export default function Register() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [role, setRole] = useState<'writer'|'student'>('student')
   const [loading, setLoading] = useState(false)
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
+    if (password !== confirmPassword) {
+      showToast({ type: 'error', message: 'Passwords do not match' })
+      return
+    }
     setLoading(true)
     try {
       await registerUser({ username, email, password, role: role.toUpperCase() })
@@ -48,6 +53,10 @@ export default function Register() {
           <div>
             <label className="label">Password</label>
             <input className="input" type="password" value={password} onChange={e => setPassword(e.target.value)} required autoComplete="new-password" />
+          </div>
+          <div>
+            <label className="label">Confirm Password</label>
+            <input className="input" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
           </div>
           <div>
             <label className="label">Register as</label>
