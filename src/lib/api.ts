@@ -2,140 +2,67 @@
 export async function getAllWithdrawals() {
   const token = localStorage.getItem('access');
   if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/admin/withdrawals/', {
+  const response = await fetch('https://pl-project-8aks.onrender.com/api/admin/withdrawals/', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-    },
+    import { assignments, availableTasks, writerSubscription, subscriptionPlans, mockFetch } from './mockData';
   });
   if (!response.ok) {
-    const error = await response.text();
+    export async function getAllWithdrawals() { 
     throw new Error(error || 'Failed to fetch admin withdrawals');
   }
-  return await response.json();
-}
-
-// Production: Admin - approve/reject withdrawal
-export async function adminWithdrawalAction(id: string, action: 'approve' | 'reject') {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch(`/api/admin/withdrawals/${id}/action`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      // Mock: return all assignments as withdrawals
+      return mockFetch(assignments);
     },
     body: JSON.stringify({ action }),
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to update withdrawal');
-  }
-  return await response.json();
-}
-
-// Production: Trigger STK Push for subscription
-export async function paySubscription({ phone, amount }: { phone: string; amount: number }) {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/subscriptions/pay', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      // Mock: just return the assignment with updated status
+      return mockFetch({ id, action });
     },
     body: JSON.stringify({ phone, amount }),
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to initiate subscription payment');
-  }
-  return await response.json();
-}
-
-// Production: Get subscription status
-export async function getSubscriptionStatus() {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/subscriptions/status', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      // Mock: simulate payment
+      return mockFetch({ success: true, phone, amount });
     },
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to fetch subscription status');
   }
-  return await response.json();
-}
-// Production: Get user earnings
-export async function getEarnings() {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/earnings/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
+      // Mock: return writerSubscription
+      return mockFetch(writerSubscription);
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to fetch earnings');
   }
   return await response.json();
-}
-
-// Production: List user withdrawals
-export async function getWithdrawals() {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/withdrawals/', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
+      // Mock: return a fake earnings object
+      return mockFetch({ total: 1234, available: 567 });
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to fetch withdrawals');
   }
   return await response.json();
-}
-
-// Production: Submit withdrawal request
-export async function submitWithdrawalRequest({ amount, method, details }: { amount: number; method: string; details: string }) {
-  const token = localStorage.getItem('access');
-  if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/withdrawals/request', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
+      // Mock: return assignments as withdrawals
+      return mockFetch(assignments);
     body: JSON.stringify({ amount, method, details }),
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to submit withdrawal request');
   }
-  return await response.json();
-}
-// Real logout (production)
-export async function logoutUser() {
-  const access = localStorage.getItem('access');
-  const response = await fetch('/api/auth/logout', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(access ? { 'Authorization': `Bearer ${access}` } : {}),
-    },
-  });
-  // Always clear tokens, even if logout fails
+      // Mock: simulate withdrawal request
+      return mockFetch({ amount, method, details, id: 'mock', status: 'pending' });
   localStorage.removeItem('access');
   localStorage.removeItem('refresh');
   localStorage.removeItem('sessionTimestamp');
@@ -150,13 +77,18 @@ export async function logoutUser() {
 export async function getCurrentUser() {
   const access = localStorage.getItem('access');
   if (!access) throw new Error('Not authenticated');
-  const response = await fetch('/api/auth/me', {
+  const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/me', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${access}`,
     },
   });
+      // Mock: clear tokens and resolve
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      localStorage.removeItem('sessionTimestamp');
+      return mockFetch(true);
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to fetch user');
@@ -165,77 +97,45 @@ export async function getCurrentUser() {
 }
 // Real user login (production)
 export async function loginUser({ username, password, role }: { username: string; password: string; role: string }) {
-  const response = await fetch('/api/auth/login', {
+  const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password, role }),
+    body: JSON.stringify({ username, password }),
   });
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Login failed');
   }
   const data = await response.json();
+      // Mock: return a fake user
+      return mockFetch({ username: 'mockuser', role: 'student', email: 'mock@example.com' });
   if (data.access && data.refresh) {
     localStorage.setItem('access', data.access);
     localStorage.setItem('refresh', data.refresh);
     localStorage.setItem('sessionTimestamp', Date.now().toString());
-    return { access: data.access, refresh: data.refresh };
-  } else {
-    throw new Error('No access or refresh token returned');
-  }
-}
-// Real user registration (production)
-export async function registerUser({ username, email, password, role }: { username: string; email: string; password: string; role: string }) {
-  const response = await fetch('/api/auth/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, email, password, role }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Registration failed');
-  }
-  return await response.json();
-}
+      // Mock: simulate login and set tokens
+      localStorage.setItem('access', 'mock-access');
+      localStorage.setItem('refresh', 'mock-refresh');
+      localStorage.setItem('sessionTimestamp', Date.now().toString());
+      return mockFetch({ access: 'mock-access', refresh: 'mock-refresh' });
 // Real refresh access token (production)
 export async function refreshAccessToken() {
   const refresh = localStorage.getItem('refresh');
   if (!refresh) throw new Error('No refresh token available');
-  const response = await fetch('/api/auth/refresh', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ refresh }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to refresh access token');
-  }
-  const data = await response.json();
+      // Mock: simulate registration
+      return mockFetch({ username, email, role });
   if (data.access) {
     localStorage.setItem('access', data.access);
     localStorage.setItem('sessionTimestamp', Date.now().toString());
     return data.access;
   } else {
     throw new Error('No access token returned');
-  }
-}
-
-// Production: Trigger STK Push for wallet top-up
-export async function triggerLipanaSTK({ phoneNumber, amount }: { phoneNumber: string; amount: number }) {
-  let token = localStorage.getItem('access');
-  let response = await fetch('/api/wallet/topup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-    },
-    body: JSON.stringify({ phone: phoneNumber, amount }),
-  });
-  if (response.status === 401) {
-    // Try to refresh the token and retry once
-    try {
+      // Mock: simulate refresh
+      localStorage.setItem('access', 'mock-access');
+      localStorage.setItem('sessionTimestamp', Date.now().toString());
+      return mockFetch('mock-access');
       token = await refreshAccessToken();
-      response = await fetch('/api/wallet/topup', {
+      response = await fetch('https://pl-project-8aks.onrender.com/api/wallet/topup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -258,7 +158,7 @@ export async function triggerLipanaSTK({ phoneNumber, amount }: { phoneNumber: s
 export async function getWalletInfo() {
   const token = localStorage.getItem('access');
   if (!token) throw new Error('Not authenticated');
-  const response = await fetch('/api/wallet/', {
+  const response = await fetch('https://pl-project-8aks.onrender.com/api/wallet/', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -268,11 +168,14 @@ export async function getWalletInfo() {
   if (!response.ok) {
     const error = await response.text();
     throw new Error(error || 'Failed to fetch wallet info');
+      // Mock: simulate STK push
+      return mockFetch({ success: true, phoneNumber, amount });
   }
   return await response.json();
 }
 
 export async function mockFetch<T>(data: T, delay = 600): Promise<T> {
   await new Promise(r => setTimeout(r, delay))
-  return data
-}
+      // Mock: return fake wallet info
+      return mockFetch({ balance: 1000 });
+    localStorage.setItem('sessionTimestamp', Date.now().toString());

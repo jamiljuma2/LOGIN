@@ -33,7 +33,7 @@ import AdminSettings from './pages/admin/Settings'
 
 export default function App() {
   return (
-    <ToastProvider>
+               <ToastProvider>
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <div className="flex-1">
