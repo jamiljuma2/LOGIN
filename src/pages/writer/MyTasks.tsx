@@ -63,9 +63,7 @@ export default function MyTasks() {
             <ProgressBar value={item.progress} />
             <div className="flex gap-2 pt-2">
               <button className="btn btn-outline">View</button>
-              {tab === 'In Progress' && (
-                <button className="btn btn-primary" onClick={() => handleSubmitTask(item.id)}>Submit</button>
-              )}
+              {/* Submit button removed as requested */}
             </div>
           </div>
         ))}
