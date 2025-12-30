@@ -84,53 +84,7 @@ export async function refreshAccessToken() {
   return mockFetch('mock-access');
 }
 // (Removed unreachable and duplicate fetch/response/error code. Only mock API functions remain.)
-}
-
-// Get current user (production)
-export async function getCurrentUser() {
-  const access = localStorage.getItem('access');
-  if (!access) throw new Error('Not authenticated');
-  const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/me', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${access}`,
-    },
-  });
-      // Mock: clear tokens and resolve
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
-      localStorage.removeItem('sessionTimestamp');
-      return mockFetch(true);
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Failed to fetch user');
-  }
-  return await response.json();
-}
-// Real user login (production)
-export async function loginUser({ username, password, role }: { username: string; password: string; role: string }) {
-  const response = await fetch('https://pl-project-8aks.onrender.com/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Login failed');
-  }
-  const data = await response.json();
-      // Mock: return a fake user
-      return mockFetch({ username: 'mockuser', role: 'student', email: 'mock@example.com' });
-  if (data.access && data.refresh) {
-    localStorage.setItem('access', data.access);
-    localStorage.setItem('refresh', data.refresh);
-    localStorage.setItem('sessionTimestamp', Date.now().toString());
-      // Mock: simulate login and set tokens
-      localStorage.setItem('access', 'mock-access');
-      localStorage.setItem('refresh', 'mock-refresh');
-      localStorage.setItem('sessionTimestamp', Date.now().toString());
-      return mockFetch({ access: 'mock-access', refresh: 'mock-refresh' });
+// (Removed all remaining real API and unreachable code. Only mock API functions remain.)
 // Real refresh access token (production)
 export async function refreshAccessToken() {
   const refresh = localStorage.getItem('refresh');
