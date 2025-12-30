@@ -1,3 +1,7 @@
+// Mock user database for registration/login
+export const mockUsers: Array<{ username: string; email: string; password: string; role: string }> = [
+  { username: 'mockuser', email: 'mock@example.com', password: 'password', role: 'student' },
+];
 // Mock: writer subscription status (in real app, fetch from backend/user profile)
 export let writerSubscription = {
   active: true,

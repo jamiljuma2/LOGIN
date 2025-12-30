@@ -1,4 +1,4 @@
-import { assignments, availableTasks, writerSubscription, subscriptionPlans } from './mockData';
+import { assignments, availableTasks, writerSubscription, subscriptionPlans, mockUsers } from './mockData';
 
 // Simulate async fetch
 export async function mockFetch<T>(data: T, delay = 600): Promise<T> {
@@ -73,7 +73,12 @@ export async function loginUser({ username, password, role }: { username: string
 }
 
 // Mock: User registration
-export async function registerUser({ username, email, password, role }: { username: string; email: string; password: string; role: string }) {
+  // Check for existing user by username or email
+  const exists = mockUsers.some(u => u.username === username || u.email === email);
+  if (exists) {
+    return Promise.reject(new Error('Account already exists with that username or email.'));
+  }
+  mockUsers.push({ username, email, password, role });
   return mockFetch({ username, email, role });
 }
 
